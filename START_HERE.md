@@ -181,7 +181,6 @@ After login, you can:
 If you need more details, check:
 - `QUICK_START.md` - 5-minute overview
 - `SETUP_GUIDE.md` - Complete guide
-- `CONVERSION_SUMMARY.md` - What changed
 - `PRE_LAUNCH_CHECKLIST.md` - Testing checklist
 
 ---
