@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Employee Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="js/dashboard.js" defer></script>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>Employee Dashboard</h1>
+    <p>Welcome, <span id="user-name"></span></p>
+    <button id="logout">Logout</button>
+  </div>
+  <script>
+    const active = localStorage.getItem('activeUser');
+    if (!active) {
+      window.location.href = 'index.html';
+    } else {
+      try {
+        const user = JSON.parse(active);
+        document.getElementById('user-name').innerText = user.firstname || user.email || '';
+      } catch (e) {}
+    }
+
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem('activeUser');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Employee Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="dashboard-container">
+    
+    <!-- HEADER -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>Smart Stock Employee Dashboard</h1>
+        <div class="user-info">
+          <span>Welcome, <span id="user-name"></span></span>
+          <button id="logout" class="logout-btn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+      <div class="dashboard-grid">
+
+        <div class="dashboard-card" onclick="openPage('view-inventory.html')">
+          <h3>View Inventory</h3>
+          <p>Check available products & stock</p>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('update-stock.html')">
+          <h3>Update Stock</h3>
+          <p>Add or reduce product quantities</p>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('low-stock.html')">
+          <h3>Low Stock Items</h3>
+          <p>Products that need restocking</p>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('view-transactions.html')">
+          <h3>Transaction History</h3>
+          <p>View stock movement records</p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const activeUser = localStorage.getItem("activeUser");
+    const role = localStorage.getItem("role");
+
+    if (!activeUser || role !== "employee") {
+      window.location.href = "index.html";
+    }
+
+    const user = JSON.parse(activeUser);
+    document.getElementById("user-name").innerText =
+      user.firstname || user.email;
+
+    function openPage(page) {
+      window.location.href = page;
+    }
+
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

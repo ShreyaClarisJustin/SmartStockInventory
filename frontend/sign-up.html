@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <script src="signup.js" defer></script> -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- <h1>Sign Up</h1> -->
+       <div class="register-header">
+            <header>Register</header>
+        </div>
+      <p id="error-message"></p>
+      <form id="signupForm">
+        <div class="incorrect">
+          <input
+            type="text"
+            class="input-field"
+            name="firstname"
+            id="firstname-input"
+            placeholder="Firstname"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="email"
+            class="input-field"
+            name="email"
+            id="email-input"
+            placeholder="Email"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            class="input-field"
+            name="password"
+            id="password-input"
+            placeholder="Password"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            class="input-field"
+            name="repeat-password"
+            id="repeat-password-input"
+            placeholder="Re-enter Password"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <!-- <div>
+          <input
+            type="password"
+            class="input-field"
+            name="repeat-password"
+            id="repeat-password-input"
+            placeholder="Confirm Password"
+            autocomplete="off"
+            required
+          />
+        </div> -->
+        <div class="role-select">
+    <select name="role" id="role-input" required>
+        <option value="" disabled selected>Select Role</option>
+        <option value="admin">Admin</option>
+        <option value="employee">Employee</option>
+    </select>
+</div> 
+<div class="login-link">
+        <button type="submit">Signup</button>
+        <p>Already have an account? <a href="index.html">Login</a></p>
+        </div>
+      </form>
+    </div>
+    <script src="js/signup.js"></script>
+  </body>
+</html>

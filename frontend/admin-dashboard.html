@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+  <script src="js/dashboard.js" defer></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1><i class="fas fa-cogs"></i> Smart Stock Admin Dashboard</h1>
+        <!-- <div class="user-info">
+          <span class="welcome-text">Welcome, <span id="user-name"></span></span>
+          <button id="logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div> -->
+         <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back</button>
+      </div>
+      <div class="user-info">
+          <span class="welcome-text">Welcome, <span id="user-name"></span></span>
+          <button id="logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+<!-- <div class="overview-card">
+    <h2>Inventory Overview</h2>
+
+    <div class="overview-stats">
+      <div class="stat-box">
+        <h3 id="total-products">0</h3>
+        <p>Total Products</p>
+      </div>
+
+      <div class="stat-box warning">
+        <h3 id="low-stock-count">0</h3>
+        <p>Low Stock Items</p>
+      </div>
+    </div>
+  </div>
+
+ -->
+
+
+      <div class="dashboard-grid">
+
+        <section class="low-stock-section">
+  <h2>⚠️ Low Stock Products</h2>
+
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <!-- <th>Stock</th>
+        <th>Low Stock Limit</th> -->
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="low-stock-body">
+      <!-- populated by JS -->
+    </tbody>
+  </table>
+
+  <p id="no-low-stock" style="display:none; color:green; font-weight:bold;">
+     All products are sufficiently stocked
+  </p>
+</section>
+
+        <div class="dashboard-card" onclick="openPage('add-product.html')">
+          <div class="card-icon">
+            <i class="fas fa-plus-circle"></i>
+          </div>
+          <div class="card-content">
+            <h3>Add New Products</h3>
+            <p>Add new items to your inventory</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('update-stock.html')">
+          <div class="card-icon">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div class="card-content">
+            <h3>Update Stock</h3>
+            <p>Modify product quantities and track changes</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('delete-product.html')">
+          <div class="card-icon">
+            <i class="fas fa-trash-alt"></i>
+          </div>
+          <div class="card-content">
+            <h3>Delete Products</h3>
+            <p>Remove items from inventory</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('manage-employees.html')">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-content">
+            <h3>Manage Employees</h3>
+            <p>Add, edit, or remove employee accounts</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('view-inventory.html')">
+          <div class="card-icon">
+            <i class="fas fa-warehouse"></i>
+          </div>
+          <div class="card-content">
+            <h3>View All Inventory</h3>
+            <p>See complete inventory overview</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div class="dashboard-card" onclick="openPage('view-transactions.html')">
+          <div class="card-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <div class="card-content">
+            <h3>Transaction History</h3>
+            <p>View all stock movement records</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const active = localStorage.getItem('activeUser');
+    if (!active) {
+      window.location.href = 'index.html';
+    } else {
+      try {
+        const user = JSON.parse(active);
+        document.getElementById('user-name').innerText = user.firstname || user.email || '';
+      } catch (e) {}
+    }
+
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem('activeUser');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      window.location.href = 'index.html';
+    });
+
+
+
+    async function fetchLowStockProducts() {
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch("http://localhost:3000/products", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const products = await res.json();
+
+    const lowStockProducts = products.filter(
+      p => p.stock <= p.lowStockLimit
+    );
+
+    renderLowStock(lowStockProducts);
+
+  } catch (err) {
+    console.error("Error fetching low stock products:", err);
+  }
+}
+
+function renderLowStock(products) {
+  const tbody = document.getElementById("low-stock-body");
+  const noLowStockMsg = document.getElementById("no-low-stock");
+
+  tbody.innerHTML = "";
+
+  if (products.length === 0) {
+    noLowStockMsg.style.display = "block";
+    return;
+  }
+
+  noLowStockMsg.style.display = "none";
+
+  products.forEach(p => {
+    const row = `
+      <tr>
+        <td>${p.name}</td>
+        <td>${p.category || "N/A"}</td>
+   
+        <td style="color:orange; font-weight:bold;">Low Stock</td>
+      </tr>
+    `;
+    tbody.innerHTML += row;
+  });
+}
+
+// Call it when dashboard loads
+fetchLowStockProducts();
+
+  </script>
+</body>
+</html>
+
+
+

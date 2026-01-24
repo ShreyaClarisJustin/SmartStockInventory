@@ -1,0 +1,158 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Background */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6c7ae0, #7f5ab6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card */
+.container {
+  background: #f7f8fc;
+  width: 900px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
+
+/* Heading */
+.container h1 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Add employee button */
+.container > button {
+  background: linear-gradient(90deg, #6c7ae0, #7f5ab6);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 25px;
+  transition: 0.3s;
+}
+
+.container > button:hover {
+  transform: scale(1.05);
+}
+
+/* Users table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+}
+
+th {
+  background: #ecefff;
+  color: #444;
+}
+
+tr:nth-child(even) {
+  background: #f6f7fb;
+}
+
+/* Action buttons */
+td button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+td button:first-child {
+  background: #4caf50;
+  color: white;
+}
+
+td button:last-child {
+  background: #e74c3c;
+  color: white;
+}
+
+td button:hover {
+  opacity: 0.85;
+}
+
+/* Back button */
+.container button:last-of-type {
+  margin-top: 25px;
+  width: 100%;
+  background: #6c757d;
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.modal-content {
+  background: #fff;
+  width: 420px;
+  padding: 30px;
+  border-radius: 18px;
+  margin: 10% auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-content label {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  height: 45px;
+  margin-top: 5px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.modal-content button {
+  margin-top: 20px;
+  width: 100%;
+  height: 50px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #6c7ae0, #7f5ab6);
+  color: white;
+  cursor: pointer;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}

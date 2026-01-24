@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Low Stock Products</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="dashboard-container">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="history.back()">Back</button>
+        <h1>Low Stock Products</h1>
+        <div class="user-info">
+          <span>Welcome, <span id="user-name"></span></span>
+          <button id="logout" class="logout-btn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Low Stock Limit</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="low-stock-body">
+          <!-- JS inserts rows -->
+        </tbody>
+      </table>
+
+      <p id="no-data" style="display:none; text-align:center; margin-top:20px;">
+        🎉 No low stock products!
+      </p>
+    </main>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const token = localStorage.getItem("token");
+    const activeUser = localStorage.getItem("activeUser");
+
+    if (!token || !activeUser) {
+      window.location.href = "index.html";
+    }
+
+    const user = JSON.parse(activeUser);
+    document.getElementById("user-name").innerText =
+      user.firstname || user.email;
+
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    async function fetchLowStock() {
+      try {
+        const res = await fetch("http://localhost:3000/products", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          alert("Failed to load products");
+          return;
+        }
+
+        const products = await res.json();
+
+        // 🔥 FILTER LOW STOCK
+        const lowStockProducts = products.filter(p =>
+          p.stock <= p.lowStockLimit
+        );
+
+        renderTable(lowStockProducts);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById("low-stock-body");
+      const noData = document.getElementById("no-data");
+      tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        noData.style.display = "block";
+        return;
+      }
+
+      noData.style.display = "none";
+
+      data.forEach(item => {
+        const status =
+          item.stock === 0
+            ? `<span style="color:red;font-weight:bold">Out of Stock</span>`
+            : `<span style="color:orange;font-weight:bold">Low Stock</span>`;
+
+        const row = `
+          <tr>
+            <td>${item._id}</td>
+            <td>${item.name}</td>
+            <td>${item.category || "-"}</td>
+            <td>${item.stock}</td>
+            <td>${item.lowStockLimit}</td>
+            <td>${status}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    fetchLowStock();
+  </script>
+</body>
+</html>

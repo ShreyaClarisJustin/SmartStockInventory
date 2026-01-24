@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>View Inventory</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+  <!-- <script src="dashboard.js"></script> -->
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back</button>
+        <h1><i class="fas fa-warehouse"></i> View All Inventory</h1>
+        <div class="user-info">
+          <span class="welcome-text">Welcome, <span id="user-name"></span></span>
+          <button id="logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <div class="inventory-controls">
+        <input type="text" id="search-input" placeholder="Search products..." />
+        <button id="search-btn">Search</button>
+      </div>
+      <table class="inventory-table">
+        <thead>
+  <tr>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Quantity</th>
+    <th>Low Stock limit</th>
+    <th>Status</th>
+    <th>Price</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+
+        <tbody id="inventory-body">
+          <!-- Rows will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </main>
+  </div>
+
+  <script>
+    // Check authentication
+    const active = localStorage.getItem('activeUser');
+    const token = localStorage.getItem('token');
+    if (!active || !token) {
+      window.location.href = 'index.html';
+    } else {
+      try {
+        const user = JSON.parse(active);
+        document.getElementById('user-name').innerText = user.firstname || user.email || '';
+      } catch (e) {}
+    }
+
+    // Logout functionality
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem('activeUser');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      window.location.href = 'index.html';
+    });
+
+    // Function to fetch inventory
+    async function fetchInventory() {
+      try {
+        const response = await fetch('http://localhost:3000/products', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const products = await response.json();
+          renderInventory(products);
+        } else {
+          console.error('Failed to fetch inventory');
+        }
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+      }
+    }
+
+    // Function to render inventory
+    function renderInventory(data) {
+      const tbody = document.getElementById('inventory-body');
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        // const lastUpdated = item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : 'N/A';
+        
+    const lowLimit = item.lowStockLimit ?? 'N/A';
+
+    let status = 'In Stock';
+    let statusColor = 'green';
+
+    if (item.stock === 0) {
+      status = 'Out of Stock';
+      statusColor = 'red';
+    } else if (item.stock <= lowLimit) {
+      status = 'Low Stock';
+      statusColor = 'orange';
+    }
+        const row = `<tr>
+          
+          <td>${item.name}</td>
+          <td>${item.category || 'N/A'}</td>
+          <td>${item.stock}</td>
+          <td>${lowLimit}</td>
+        <td style="color:${statusColor}; font-weight:bold;">
+          ${status}
+        </td>
+          <td>₹${item.price}</td>
+          <td><button onclick="editProduct('${item._id}')">Edit</button></td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    // Initial fetch
+    fetchInventory();
+
+    // Search functionality
+    document.getElementById('search-btn').addEventListener('click', () => {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      // For now, refetch and filter client-side; could be improved with server-side search
+      fetchInventory().then(() => {
+        const rows = document.querySelectorAll('#inventory-body tr');
+        rows.forEach(row => {
+          const name = row.cells[0].textContent.toLowerCase();
+          row.style.display = name.includes(query) ? '' : 'none';
+        });
+      });
+    });
+
+    // Placeholder for edit function
+    function editProduct(id) {
+      // Implement edit logic, e.g., redirect to update-stock.html with ID
+      window.location.href = `update-stock.html?id=${id}`;
+    }
+  </script>
+</body>
+</html>

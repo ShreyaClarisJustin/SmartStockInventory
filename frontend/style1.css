@@ -1,0 +1,119 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Background */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6c7ae0, #7f5ab6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main Card */
+.container {
+  background: #f7f8fc;
+  width: 700px;
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* Heading */
+.container h1 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+}
+
+/* Form layout */
+form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+/* Full-width rows */
+.form-group:nth-child(4) {
+  grid-column: span 2;
+}
+
+/* Labels */
+label {
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+/* Inputs, select, textarea */
+input,
+select,
+textarea {
+  width: 100%;
+  height: 50px;
+  padding: 0 15px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+  transition: 0.3s;
+}
+
+textarea {
+  height: auto;
+  padding: 15px;
+}
+
+/* Hover & focus */
+input:focus,
+select:focus,
+textarea:focus {
+  transform: scale(1.03);
+}
+
+/* Buttons container */
+form + button,
+form button {
+  grid-column: span 2;
+}
+
+/* Update button */
+form button[type="submit"] {
+  margin-top: 20px;
+  height: 55px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(90deg, #6c7ae0, #7f5ab6);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+form button[type="submit"]:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* Back button */
+.container > button {
+  margin-top: 20px;
+  width: 100%;
+  height: 55px;
+  border-radius: 14px;
+  border: none;
+  background: #6c757d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.container > button:hover {
+  background: #5a6268;
+}
