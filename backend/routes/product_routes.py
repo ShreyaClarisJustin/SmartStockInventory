@@ -111,10 +111,10 @@ def update_stock(product_id):
             {"$set": {"stock": new_stock}}
         )
         
-        # Record transaction
+        # Record transaction - use 'id' from JWT token (not '_id')
         transaction = {
             "productId": product_obj_id,
-            "userId": request.user["_id"],
+            "userId": request.user.get("id"),
             "type": "stock_update",
             "quantity_changed": quantity_changed,
             "old_stock": old_stock,
