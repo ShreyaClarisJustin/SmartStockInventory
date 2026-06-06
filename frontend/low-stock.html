@@ -66,27 +66,35 @@
 
     async function fetchLowStock() {
       try {
-        const res = await fetch("http://localhost:3000/products", {
+        console.log("Fetching low stock products...");
+        console.log("Token:", token ? "Present" : "Missing");
+        
+        const res = await fetch("https://smartstock-backend-4.onrender.com/products", {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
+        console.log("Response status:", res.status);
+        
         if (!res.ok) {
-          alert("Failed to load products");
-          return;
+          throw new Error(`Failed to load products: ${res.status} ${res.statusText}`);
         }
 
         const products = await res.json();
+        console.log("Products received:", products);
 
         // 🔥 FILTER LOW STOCK
         const lowStockProducts = products.filter(p =>
           p.stock <= p.lowStockLimit
         );
 
+        console.log("Low stock products:", lowStockProducts);
         renderTable(lowStockProducts);
       } catch (err) {
-        console.error("Error:", err);
+        console.error("Error fetching low stock products:", err);
+        const tbody = document.getElementById("low-stock-body");
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Error loading products: ${err.message}</td></tr>`;
       }
     }
 

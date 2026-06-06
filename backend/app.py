@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask, request, jsonify, send_from_directory
 from flask_pymongo import PyMongo
 from flask_cors import CORS
@@ -17,10 +19,11 @@ from middleware.auth_middleware import authenticate_token
 # --------------------------
 # APP SETUP
 # --------------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.join(BASE_DIR, "../frontend")
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# FRONTEND_DIR = os.path.join(BASE_DIR, "../frontend")
 
-app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="")
+# app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="")
+app = Flask(__name__)
 
 # Configure CORS to allow preflight requests
 CORS(app, 
@@ -28,8 +31,11 @@ CORS(app,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"])
 
-app.config["MONGO_URI"] = "mongodb://127.0.0.1:27017/authDB"
-app.config["SECRET_KEY"] = "MY_SECRET_KEY"
+# app.config["MONGO_URI"] = "mongodb+srv://<smartstock>:<smartstock123>@cluster0.58zie8k.mongodb.net/authDB?appName=Cluster0"
+# app.config["SECRET_KEY"] = "MY_SECRET_KEY"
+
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 mongo = PyMongo(app)
 
@@ -59,16 +65,9 @@ def handle_preflight():
 # --------------------------
 @app.route("/")
 def index():
-    return send_from_directory(FRONTEND_DIR, "index.html")
+    return jsonify({"message": "SmartStock Backend Running"})
 
-@app.route("/<path:filename>")
-def serve_static(filename):
-    """Serve static files from frontend directory"""
-    try:
-        return send_from_directory(FRONTEND_DIR, filename)
-    except:
-        # If file not found, return index.html for SPA routing
-        return send_from_directory(FRONTEND_DIR, "index.html"), 404
+
 
 # --------------------------
 # DB COLLECTIONS

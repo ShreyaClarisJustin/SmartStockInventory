@@ -87,7 +87,7 @@
         }
 
         console.log('Fetching users...');
-        const response = await fetch("http://localhost:3000/users", {
+        const response = await fetch("https://smartstock-backend-4.onrender.com/users", {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
@@ -172,7 +172,7 @@
       };
 
       try {
-        const response = await fetch(`http://localhost:3000/users/${userId}`, {
+        const response = await fetch(`https://smartstock-backend-4.onrender.com/users/${userId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -198,7 +198,7 @@
       if (!confirm('Are you sure you want to delete this user?')) return;
 
       try {
-        const response = await fetch(`http://localhost:3000/users/${userId}`, {
+        const response = await fetch(`https://smartstock-backend-4.onrender.com/users/${userId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -235,7 +235,7 @@ document.getElementById("add-user-form").addEventListener("submit", async (e) =>
   };
 
   try {
-    const response = await fetch("http://localhost:3000/users", {
+    const response = await fetch("https://smartstock-backend-4.onrender.com/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

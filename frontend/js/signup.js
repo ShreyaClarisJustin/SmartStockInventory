@@ -9,19 +9,29 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     const password = document.getElementById("password-input").value;
     const role = document.getElementById("role-input").value;
 
-    const res = await fetch("http://localhost:3000/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstname, email, password, role })
-    });
+    if (!firstname || !email || !password || !role) {
+        alert("All fields are required");
+        return;
+    }
 
-    const data = await res.json();
+    try {
+        const res = await fetch("https://smartstock-backend-4.onrender.com/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ firstname, email, password, role })
+        });
 
-    if (data.error) {
-        alert(data.error);
-    } else {
-        alert("Signup success! Please login.");
-        window.location.href = "index.html"; // login page
+        const data = await res.json();
+
+        if (data.error) {
+            alert(data.error);
+        } else {
+            alert("Signup success! Please login.");
+            window.location.href = "index.html"; // login page
+        }
+    } catch (error) {
+        console.error("Signup error:", error);
+        alert("Error: " + error.message);
     }
 });
 
