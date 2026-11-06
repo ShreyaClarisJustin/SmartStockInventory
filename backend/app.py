@@ -34,6 +34,11 @@ CORS(app,
 # app.config["MONGO_URI"] = "mongodb+srv://<smartstock>:<smartstock123>@cluster0.58zie8k.mongodb.net/authDB?appName=Cluster0"
 # app.config["SECRET_KEY"] = "MY_SECRET_KEY"
 
+# app.config["MONGO_URI"] = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/authDB")
+# app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "MY_SECRET_KEY")
+
+
+
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
@@ -159,5 +164,6 @@ def delete_user(id):
 # START SERVER
 # --------------------------
 if __name__ == "__main__":
-    app.run(port=3000, debug=True)
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=port, debug=True)
 

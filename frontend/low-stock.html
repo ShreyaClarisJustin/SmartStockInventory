@@ -69,7 +69,7 @@
         console.log("Fetching low stock products...");
         console.log("Token:", token ? "Present" : "Missing");
         
-        const res = await fetch("https://smartstock-backend-4.onrender.com/products", {
+        const res = await fetch("http://localhost:3000/products", {
           headers: {
             Authorization: `Bearer ${token}`
           }

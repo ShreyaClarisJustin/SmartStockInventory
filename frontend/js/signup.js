@@ -15,7 +15,7 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     }
 
     try {
-        const res = await fetch("https://smartstock-backend-4.onrender.com/signup", {
+        const res = await fetch("http://localhost:3000/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ firstname, email, password, role })

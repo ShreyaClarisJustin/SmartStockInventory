@@ -13,7 +13,7 @@ document.getElementById("addProductForm").addEventListener("submit", async (e) =
     lowStockLimit: Number(document.getElementById("lowStockLimit").value)
   };
 
-  const res = await fetch("https://smartstock-backend-4.onrender.com/products", {
+  const res = await fetch("http://localhost:3000/products", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
